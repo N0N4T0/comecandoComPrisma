@@ -17,7 +17,7 @@ router.post("/createManyUsers", userController.createUsers)
 // Get all users
 router.get("/", userController.showUsers)
 // Get user
-router.get("/byId/:id", userController.createOneUser)
+router.get("/byId/:id", userController.showUserById)
 // Get all users with cars
 router.get("/usersWithCars", userController.showUsersWithCars)
 
