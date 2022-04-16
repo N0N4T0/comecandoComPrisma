@@ -32,9 +32,31 @@ app.post("/createManyUsers", async(req: Request, res: Response) => {
     res.json(users)
 })
 
+// Create many cars
+app.post("/createManyCars", async(req: Request, res: Response) => {
+    const {carList} = req.body
+
+    const cars = await prisma.car.createMany({
+        data: carList
+    })
+
+    res.json(cars)
+})
+
 // Get all users
 app.get("/", async (req: Request, res: Response) => {
     const users = await prisma.user.findMany()
+
+    res.json(users)
+})
+
+// Get all users with cars
+app.get("/usersWithCars", async (req: Request, res: Response) => {
+    const users = await prisma.user.findMany({
+        include: {
+            cars: true
+        }
+    })
 
     res.json(users)
 })
