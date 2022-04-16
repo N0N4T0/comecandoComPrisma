@@ -7,6 +7,7 @@ app.use(express.json())
 // usaremos essa variável para manipulara tabela
 const prisma = new PrismaClient()
 
+// Create one user
 app.post("/", async(req: Request, res: Response) => {
     const {username, password} = req.body
 
@@ -20,12 +21,38 @@ app.post("/", async(req: Request, res: Response) => {
     res.json(user)
 })
 
+// Create many users
+app.post("/createManyUsers", async(req: Request, res: Response) => {
+    const {userList} = req.body
+
+    const users = await prisma.user.createMany({
+        data: userList
+    })
+
+    res.json(users)
+})
+
+// Get all users
 app.get("/", async (req: Request, res: Response) => {
     const users = await prisma.user.findMany()
 
     res.json(users)
 })
 
+// Get one user
+app.get("/byId/:id", async (req: Request, res: Response) => {
+    const id = req.params.id
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: Number(id),
+        }
+    })
+
+    res.json(user)
+})
+
+// Update one user
 app.put("/", async (req: Request, res: Response) => {
     const {id, username} = req.body
 
@@ -41,6 +68,7 @@ app.put("/", async (req: Request, res: Response) => {
     res.json(updateUser)
 })
 
+// Delete one user
 app.delete("/:id", async (req: Request, res: Response) => {
     const id = req.params.id
 
